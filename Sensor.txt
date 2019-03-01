@@ -1,0 +1,212 @@
+[
+    {
+        "id": "14d0d044.1b68d",
+        "type": "tab",
+        "label": "Sensor",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e5445a99.32d7b8",
+        "type": "mqtt in",
+        "z": "14d0d044.1b68d",
+        "name": "",
+        "topic": "sensor31scj",
+        "qos": "2",
+        "broker": "5ae131dc.aebab",
+        "x": 110,
+        "y": 80,
+        "wires": [
+            [
+                "5f7edb2b.f5edb4",
+                "f0cda846.bcf4d8"
+            ]
+        ]
+    },
+    {
+        "id": "8386a5e9.d8d878",
+        "type": "change",
+        "z": "14d0d044.1b68d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "sensor",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 330,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7e61e6e7.1dc218",
+        "type": "change",
+        "z": "14d0d044.1b68d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "sensor",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 330,
+        "y": 300,
+        "wires": [
+            [
+                "85ec7993.22e398"
+            ]
+        ]
+    },
+    {
+        "id": "85ec7993.22e398",
+        "type": "template",
+        "z": "14d0d044.1b68d",
+        "name": "page",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head></head>\n    <body>\n        <h1>{{ payload }}</h1>\n    </body>\n</html>",
+        "x": 520,
+        "y": 300,
+        "wires": [
+            [
+                "f13bf70.36d5e08"
+            ]
+        ]
+    },
+    {
+        "id": "f13bf70.36d5e08",
+        "type": "http response",
+        "z": "14d0d044.1b68d",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 660,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "a3423ac.b1cf2c8",
+        "type": "http in",
+        "z": "14d0d044.1b68d",
+        "name": "",
+        "url": "/sensor",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 100,
+        "y": 300,
+        "wires": [
+            [
+                "7e61e6e7.1dc218"
+            ]
+        ]
+    },
+    {
+        "id": "126a3908.60a627",
+        "type": "firebase modify",
+        "z": "14d0d044.1b68d",
+        "name": "firebase",
+        "firebaseconfig": "",
+        "childpath": "sensor",
+        "method": "push",
+        "value": "msg.payload",
+        "priority": "msg.priority",
+        "x": 310,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5f7edb2b.f5edb4",
+        "type": "ui_text",
+        "z": "14d0d044.1b68d",
+        "group": "7cf33b73.1ea444",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "A vaga esta:",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 340,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "f0cda846.bcf4d8",
+        "type": "function",
+        "z": "14d0d044.1b68d",
+        "name": "object",
+        "func": "var data = new Date();\n\ndados = {\n    vaga: msg.payload,\n    data: data\n};\n\nmsg.payload = JSON.stringify(dados);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 140,
+        "y": 200,
+        "wires": [
+            [
+                "126a3908.60a627",
+                "8386a5e9.d8d878"
+            ]
+        ]
+    },
+    {
+        "id": "5ae131dc.aebab",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "iot.eclipse.org",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "7cf33b73.1ea444",
+        "type": "ui_group",
+        "z": "",
+        "name": "Sensor",
+        "tab": "1bbd9e21.e226c2",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "1bbd9e21.e226c2",
+        "type": "ui_tab",
+        "z": "",
+        "name": "31scj",
+        "icon": "dashboard"
+    }
+]
